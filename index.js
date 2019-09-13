@@ -1,7 +1,6 @@
 'use strict';
 
 const _ = require('./vendor/lodash');
-const Sequelize = require('sequelize');
 
 const PLAIN_TYPES = ['string', 'number', 'boolean'];
 const ARRAY_TYPES = [
@@ -85,7 +84,7 @@ function _getSchemeFromModel(model, scheme) {
 
 function _isModel(obj, sequelize, seqVer) {
   if(seqVer >= 5) {
-    return obj.prototype instanceof Sequelize.Model;
+    return obj.prototype instanceof sequelize.Sequelize.Model;
   } else if (seqVer >= 4) {
     return obj.prototype instanceof sequelize.Model;
   } else {
@@ -95,7 +94,7 @@ function _isModel(obj, sequelize, seqVer) {
 
 function _isModelInstance(obj, sequelize, seqVer) {
   if(seqVer >= 5) {
-    return obj instanceof Sequelize.Model;
+    return obj instanceof sequelize.Sequelize.Model;
   } else if (seqVer >= 4) {
     return obj instanceof sequelize.Model;
   } else {
@@ -125,7 +124,7 @@ class Serializer {
     let seqVer = 1 * (sequelize.constructor.version || '-').split('.', 2)[0]; // major version as number
     let schemeName = null;
     
-    if(!(sequelize.Model || Sequelize.Model) || isNaN(seqVer) || !_isModel(model, sequelize, seqVer)) {
+    if(!(sequelize.Model || sequelize.Sequelize.Model) || isNaN(seqVer) || !_isModel(model, sequelize, seqVer)) {
       throw new Error('' + model + ' is not a valid Sequelize model');
     }
 
